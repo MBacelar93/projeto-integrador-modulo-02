@@ -1,15 +1,22 @@
-// import {buscarUsuarios} from './api.js';
-// import { mostrarCarregando, mostrarErro, limparEstado } from './ui.js';
+import { buscarUsuarios } from "./api.js";
+import { mostrarCarregando, mostrarErro, limparEstado, renderizarLista } from "./ui.js";
 
-// const usuarios = await buscarUsuarios();
-// console.log(usuarios);
+async function iniciar() {
+    mostrarCarregando();
 
-// mostrarCarregando();
-// // mostrarErro('Não possível carregar os usuários.');
-// // limparEstado();
+    try {
+        const usuarios = await buscarUsuarios();
 
-import { buscarUsuarios } from './api.js';
-import { renderizarLista } from './ui.js';
+        limparEstado();
+        renderizarLista(usuarios);
 
-const usuarios = await buscarUsuarios();
-renderizarLista(usuarios);
+    } catch (erro) {
+        console.error(erro);
+        mostrarErro('Não foi possível carregar os usuários. Tente novamente.');
+    }
+}
+
+iniciar();
+
+
+//finally sempre é executado após o catch. Isso faria com que a mensagem de erro fosse apagada.
